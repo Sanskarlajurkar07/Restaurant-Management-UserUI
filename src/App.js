@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
+import CustomerDetailsPage from "./pages/CustomerDetailsPage"
 import HomePage from "./pages/HomePage"
 import CheckoutPage from "./pages/CheckoutPage"
 import ThankYouPage from "./pages/ThankYouPage"
@@ -9,7 +10,7 @@ import "./App.css"
 
 function App() {
   const [cart, setCart] = useState([])
-  const [orderType, setOrderType] = useState("dineIn")
+  const [customerInfo, setCustomerInfo] = useState(null)
 
   // Load cart from localStorage on mount
   useEffect(() => {
@@ -62,19 +63,44 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage cart={cart} addToCart={addToCart} updateQuantity={updateQuantity} orderType={orderType} setOrderType={setOrderType} />} />
+        <Route 
+          path="/" 
+          element={
+            <CustomerDetailsPage 
+              setCustomerInfo={setCustomerInfo}
+            />
+          } 
+        />
+        <Route 
+          path="/home" 
+          element={
+            customerInfo ? (
+              <HomePage 
+                cart={cart} 
+                addToCart={addToCart} 
+                updateQuantity={updateQuantity} 
+                customerInfo={customerInfo}
+              />
+            ) : (
+              <Navigate to="/" replace />
+            )
+          } 
+        />
         <Route
           path="/checkout"
           element={
-            <CheckoutPage
-              cart={cart}
-              removeFromCart={removeFromCart}
-              updateQuantity={updateQuantity}
-              updateCookingInstructions={updateCookingInstructions}
-              orderType={orderType}
-              setOrderType={setOrderType}
-              clearCart={clearCart}
-            />
+            customerInfo ? (
+              <CheckoutPage
+                cart={cart}
+                removeFromCart={removeFromCart}
+                updateQuantity={updateQuantity}
+                updateCookingInstructions={updateCookingInstructions}
+                clearCart={clearCart}
+                customerInfo={customerInfo}
+              />
+            ) : (
+              <Navigate to="/" replace />
+            )
           }
         />
         <Route path="/thank-you" element={<ThankYouPage />} />

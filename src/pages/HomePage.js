@@ -1,17 +1,15 @@
 "use client"
 
-import { useState, useEffect, useRef, useCallback } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import CategoryTabs from "../components/CategoryTabs"
 import MenuGrid from "../components/MenuGrid"
-import CartButton from "../components/CartButton"
 import SearchBar from "../components/SearchBar"
-import CustomerDetailsModal from "../components/CustomerDetailsModal"
 import "../styles/HomePage.css"
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || "https://restaurant-management-backend-2.onrender.com/api"
 
-function HomePage({ cart, addToCart, updateQuantity, orderType, setOrderType }) {
+function HomePage({ cart, addToCart, updateQuantity, customerInfo }) {
   const navigate = useNavigate()
   const [categories, setCategories] = useState([])
   const [selectedCategory, setSelectedCategory] = useState("All")
@@ -20,8 +18,6 @@ function HomePage({ cart, addToCart, updateQuantity, orderType, setOrderType }) 
   const [loading, setLoading] = useState(false)
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
-  const [showCustomerModal, setShowCustomerModal] = useState(false)
-  const [availableTables, setAvailableTables] = useState([])
   const observerTarget = useRef(null)
 
   // Fetch categories
@@ -159,41 +155,16 @@ function HomePage({ cart, addToCart, updateQuantity, orderType, setOrderType }) 
       alert("Your cart is empty")
       return
     }
-    setShowCustomerModal(true)
+    navigate("/checkout")
   }
-
-  const fetchAvailableTables = async (capacity) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/tables/available/${capacity}`)
-      const data = await response.json()
-      setAvailableTables(data.data || [])
-    } catch (error) {
-      console.error("Error fetching tables:", error)
-      setAvailableTables([])
-    }
-  }
-
-  const handleCustomerSubmit = (customerInfo) => {
-    setShowCustomerModal(false)
-    // Navigate to checkout with customer info
-    navigate("/checkout", { state: { customerInfo } })
-  }
-
-  // Fetch tables when modal opens and dine in is selected
-  useEffect(() => {
-    if (showCustomerModal && orderType === "dineIn") {
-      fetchAvailableTables(2) // Default capacity
-    }
-  }, [showCustomerModal, orderType])
 
   return (
     <div className="home-page">
       <header className="home-header">
         <div className="header-content">
-          <h1>Good evening</h1>
-          <p>Place you order here</p>
+          <h1>Good evening, {customerInfo?.name}</h1>
+          <p>Place your order here</p>
         </div>
-        <CartButton count={cartCount} onClick={() => navigate("/checkout")} />
       </header>
 
       <SearchBar value={searchQuery} onChange={setSearchQuery} cartTotal={cartTotal} />
@@ -216,17 +187,6 @@ function HomePage({ cart, addToCart, updateQuantity, orderType, setOrderType }) 
         <button className="homepage-next-button" onClick={handleNextClick}>
           Next
         </button>
-      )}
-
-      {showCustomerModal && (
-        <CustomerDetailsModal
-          orderType={orderType}
-          setOrderType={setOrderType}
-          onClose={() => setShowCustomerModal(false)}
-          onSubmit={handleCustomerSubmit}
-          availableTables={availableTables}
-          initialData={null}
-        />
       )}
     </div>
   )

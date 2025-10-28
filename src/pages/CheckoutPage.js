@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useNavigate, useLocation } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import CartSummary from "../components/CartSummary"
 import OrderTypeSelector from "../components/OrderTypeSelector"
 import SwipeToOrder from "../components/SwipeToOrder"
@@ -15,25 +15,40 @@ function CheckoutPage({
   removeFromCart,
   updateQuantity,
   updateCookingInstructions,
-  orderType,
-  setOrderType,
   clearCart,
+  customerInfo,
 }) {
   const navigate = useNavigate()
-  const location = useLocation()
-  const [customerInfo, setCustomerInfo] = useState(
-    location.state?.customerInfo || {
-      name: "",
-      phoneNumber: "",
-      numberOfMembers: "2",
-      address: "",
-      tableNumber: null,
-    }
-  )
   const [selectedItemForInstructions, setSelectedItemForInstructions] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [orderType, setOrderType] = useState("takeaway")
+  const [tableNumber, setTableNumber] = useState(null)
+  const [availableTables, setAvailableTables] = useState([])
+
+  // Fetch available tables when order type is dineIn
+  useEffect(() => {
+    const fetchAvailableTables = async () => {
+      if (orderType === "dineIn") {
+        try {
+          const capacity = parseInt(customerInfo.numberOfMembers) || 2
+          const response = await fetch(`${API_BASE_URL}/tables/available/${capacity}`)
+          const data = await response.json()
+          setAvailableTables(data.data || [])
+        } catch (error) {
+          console.error("Error fetching tables:", error)
+          setAvailableTables([])
+        }
+      }
+    }
+    fetchAvailableTables()
+  }, [orderType, customerInfo.numberOfMembers])
 
   const handlePlaceOrder = async () => {
+    // Validate dineIn requires table selection
+    if (orderType === "dineIn" && !tableNumber) {
+      alert("Please select a table for dine-in orders")
+      return
+    }
 
     setLoading(true)
     try {
@@ -46,10 +61,10 @@ function CheckoutPage({
         customerInfo: {
           name: customerInfo.name,
           phoneNumber: customerInfo.phoneNumber,
-          ...(orderType === "dineIn" ? { numberOfMembers: Number.parseInt(customerInfo.numberOfMembers) } : {}),
+          numberOfMembers: Number.parseInt(customerInfo.numberOfMembers),
           ...(orderType === "takeaway" ? { address: customerInfo.address } : {}),
         },
-        ...(orderType === "dineIn" ? { tableNumber: customerInfo.tableNumber } : {}),
+        ...(orderType === "dineIn" && tableNumber ? { tableNumber } : {}),
         cookingInstructions: cart
           .filter((item) => item.cookingInstructions)
           .map((item) => `${item.name}: ${item.cookingInstructions}`)
@@ -80,14 +95,14 @@ function CheckoutPage({
 
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
   const deliveryCharge = orderType === "takeaway" ? 50 : 0
-  const tax = Math.round(subtotal * 0.05)
+  const tax = 5
   const total = subtotal + deliveryCharge + tax
 
   if (cart.length === 0) {
     return (
       <div className="checkout-page empty-cart">
         <h2>Your cart is empty</h2>
-        <button onClick={() => navigate("/")}>Continue Shopping</button>
+        <button onClick={() => navigate("/home")}>Continue Shopping</button>
       </div>
     )
   }
@@ -95,7 +110,7 @@ function CheckoutPage({
   return (
     <div className="checkout-page">
       <header className="checkout-header">
-        <button onClick={() => navigate("/")} className="back-button">
+        <button onClick={() => navigate("/home")} className="back-button">
           ← Back
         </button>
         <h1>Order Summary</h1>
@@ -132,13 +147,33 @@ function CheckoutPage({
 
         <OrderTypeSelector orderType={orderType} onSelectOrderType={setOrderType} />
 
+        {orderType === "dineIn" && (
+          <div className="table-selection">
+            <h3>Select Table</h3>
+            <select 
+              value={tableNumber || ""} 
+              onChange={(e) => setTableNumber(parseInt(e.target.value))}
+              className="table-select"
+            >
+              <option value="">Choose a table</option>
+              {availableTables.map((table) => (
+                <option key={table._id || table.id} value={table.tableNumber}>
+                  Table {table.tableNumber} (Capacity: {table.capacity})
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
         <div className="customer-details-display">
           <h3>Your details</h3>
           <p>{customerInfo.name}, {customerInfo.phoneNumber}</p>
-          {orderType === "dineIn" && customerInfo.tableNumber && (
-            <p>Table {customerInfo.tableNumber}</p>
+          {orderType === "dineIn" && tableNumber && (
+            <p className="table-info">
+              <span className="icon">🪑</span> Table {tableNumber}
+            </p>
           )}
-          {orderType === "takeaway" && customerInfo.address && (
+          {orderType === "takeaway" && (
             <>
               <p className="address-info">
                 <span className="icon">📍</span> {customerInfo.address}
