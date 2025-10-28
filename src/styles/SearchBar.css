@@ -27,3 +27,13 @@
 .search-bar input::placeholder {
   color: #ccc;
 }
+
+.cart-total-badge {
+  background-color: #333;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
+}

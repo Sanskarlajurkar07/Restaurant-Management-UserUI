@@ -1,106 +1,129 @@
 .cart-summary {
-  background-color: white;
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 20px;
-}
-
-.cart-summary h2 {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 16px;
-}
-
-.cart-item {
   display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cart-item-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.cart-item-header {
+  display: flex;
+  align-items: center;
   gap: 12px;
-  padding: 12px 0;
-  border-bottom: 1px solid #eee;
-  align-items: flex-start;
+  margin-bottom: 12px;
 }
 
-.cart-item:last-child {
-  border-bottom: none;
-}
-
-.item-image {
-  width: 80px;
-  height: 80px;
+.item-image-small {
+  width: 70px;
+  height: 70px;
   border-radius: 8px;
   overflow: hidden;
   flex-shrink: 0;
 }
 
-.item-image img {
+.item-image-small img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.item-details {
+.item-info-header {
   flex: 1;
 }
 
-.item-details h3 {
-  font-size: 14px;
+.item-info-header h3 {
+  font-size: 16px;
   font-weight: 600;
   margin-bottom: 4px;
 }
 
-.item-details .price {
+.item-info-header .price {
   font-size: 14px;
   font-weight: 600;
   color: #333;
-  margin-bottom: 4px;
 }
 
-.instructions {
-  font-size: 12px;
-  color: #666;
-  margin-bottom: 4px;
+.cart-item-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
 }
 
-.instructions-link {
+.instructions-link-simple {
   background: none;
   border: none;
-  color: #0066cc;
+  color: #999;
   cursor: pointer;
   font-size: 12px;
-  text-decoration: underline;
   padding: 0;
+  text-align: left;
 }
 
 .quantity-control {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   background-color: #f5f5f5;
-  border-radius: 6px;
-  padding: 4px 8px;
+  border-radius: 8px;
+  padding: 6px 12px;
 }
 
 .quantity-control button {
-  background: none;
+  background: white;
   border: none;
   cursor: pointer;
-  font-size: 16px;
-  width: 24px;
-  height: 24px;
+  font-size: 18px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.quantity-control button:hover {
+  background-color: #e0e0e0;
+}
+
+.quantity-control span {
+  font-weight: 600;
+  min-width: 20px;
+  text-align: center;
 }
 
 .remove-button {
   background-color: #ff4444;
   color: white;
   border: none;
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  font-size: 16px;
+  transition: background-color 0.2s ease;
+}
+
+.remove-button:hover {
+  background-color: #cc0000;
+}
+
+.cooking-instructions-display {
+  margin-top: 12px;
+  padding: 8px;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #666;
 }

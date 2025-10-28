@@ -1,10 +1,9 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 import CartSummary from "../components/CartSummary"
 import OrderTypeSelector from "../components/OrderTypeSelector"
-import CustomerForm from "../components/CustomerForm"
 import SwipeToOrder from "../components/SwipeToOrder"
 import CookingInstructionsModal from "../components/CookingInstructionsModal"
 import "../styles/CheckoutPage.css"
@@ -21,58 +20,20 @@ function CheckoutPage({
   clearCart,
 }) {
   const navigate = useNavigate()
-  const [customerInfo, setCustomerInfo] = useState({
-    name: "",
-    phoneNumber: "",
-    numberOfMembers: "2",
-    address: "",
-    tableNumber: null,
-  })
+  const location = useLocation()
+  const [customerInfo, setCustomerInfo] = useState(
+    location.state?.customerInfo || {
+      name: "",
+      phoneNumber: "",
+      numberOfMembers: "2",
+      address: "",
+      tableNumber: null,
+    }
+  )
   const [selectedItemForInstructions, setSelectedItemForInstructions] = useState(null)
-  const [availableTables, setAvailableTables] = useState([])
   const [loading, setLoading] = useState(false)
 
-  // Fetch available tables when numberOfMembers changes
-  useEffect(() => {
-    if (orderType === "dineIn" && customerInfo.numberOfMembers) {
-      fetchAvailableTables(customerInfo.numberOfMembers)
-    }
-  }, [customerInfo.numberOfMembers, orderType])
-
-  const fetchAvailableTables = async (capacity) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/tables/available/${capacity}`)
-      const data = await response.json()
-      setAvailableTables(data.data || [])
-    } catch (error) {
-      console.error("Error fetching tables:", error)
-      setAvailableTables([])
-    }
-  }
-
   const handlePlaceOrder = async () => {
-    // Validate required fields
-    if (!customerInfo.name || !customerInfo.phoneNumber) {
-      alert("Please fill in all required fields")
-      return
-    }
-
-    if (orderType === "dineIn") {
-      if (!customerInfo.numberOfMembers || !customerInfo.tableNumber) {
-        alert("Please select number of members and a table")
-        return
-      }
-    } else {
-      if (!customerInfo.address) {
-        alert("Please enter your address")
-        return
-      }
-    }
-
-    if (cart.length === 0) {
-      alert("Your cart is empty")
-      return
-    }
 
     setLoading(true)
     try {
@@ -171,12 +132,23 @@ function CheckoutPage({
 
         <OrderTypeSelector orderType={orderType} onSelectOrderType={setOrderType} />
 
-        <CustomerForm
-          orderType={orderType}
-          customerInfo={customerInfo}
-          onUpdateCustomerInfo={setCustomerInfo}
-          availableTables={availableTables}
-        />
+        <div className="customer-details-display">
+          <h3>Your details</h3>
+          <p>{customerInfo.name}, {customerInfo.phoneNumber}</p>
+          {orderType === "dineIn" && customerInfo.tableNumber && (
+            <p>Table {customerInfo.tableNumber}</p>
+          )}
+          {orderType === "takeaway" && customerInfo.address && (
+            <>
+              <p className="address-info">
+                <span className="icon">📍</span> {customerInfo.address}
+              </p>
+              <p className="delivery-time">
+                <span className="icon">🕐</span> Delivery in 42 mins
+              </p>
+            </>
+          )}
+        </div>
 
         <SwipeToOrder onSwipeComplete={handlePlaceOrder} loading={loading} />
       </div>

@@ -1,7 +1,7 @@
 "use client"
 import "../styles/MenuItem.css"
 
-function MenuItem({ item, onAddToCart }) {
+function MenuItem({ item, onAddToCart, cartQuantity, onUpdateQuantity }) {
   return (
     <div className="menu-item">
       <div className="item-image">
@@ -12,9 +12,21 @@ function MenuItem({ item, onAddToCart }) {
         {item.description && <p className="description">{item.description}</p>}
         <div className="item-footer">
           <span className="price">₹{item.price}</span>
-          <button className="add-button" onClick={() => onAddToCart(item)}>
-            +
-          </button>
+          {cartQuantity > 0 ? (
+            <div className="quantity-controls">
+              <button className="quantity-button" onClick={() => onUpdateQuantity(item._id || item.id, cartQuantity - 1)}>
+                −
+              </button>
+              <span className="quantity-display">{cartQuantity}</span>
+              <button className="quantity-button" onClick={() => onUpdateQuantity(item._id || item.id, cartQuantity + 1)}>
+                +
+              </button>
+            </div>
+          ) : (
+            <button className="add-button" onClick={() => onAddToCart(item)}>
+              +
+            </button>
+          )}
         </div>
       </div>
     </div>

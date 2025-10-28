@@ -49,3 +49,30 @@
   color: #999;
   font-size: 16px;
 }
+
+.homepage-next-button {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 300px;
+  padding: 14px 40px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+}
+
+.homepage-next-button:hover {
+  background-color: #555;
+}
+
+.homepage-next-button:active {
+  background-color: #222;
+}

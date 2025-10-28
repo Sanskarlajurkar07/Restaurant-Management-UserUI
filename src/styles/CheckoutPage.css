@@ -126,3 +126,57 @@ textarea {
   min-height: 44px;
   padding: 8px 12px;
 }
+
+.checkout-next-button {
+  width: 100%;
+  padding: 14px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 20px;
+}
+
+.checkout-next-button:hover {
+  background-color: #555;
+}
+
+.checkout-next-button:active {
+  background-color: #222;
+}
+
+.customer-details-display {
+  background-color: white;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.customer-details-display h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.customer-details-display p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.customer-details-display .address-info,
+.customer-details-display .delivery-time {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  color: #333;
+}
+
+.customer-details-display .icon {
+  font-size: 16px;
+}

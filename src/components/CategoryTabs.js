@@ -1,21 +1,21 @@
 "use client"
 
 import { useRef, useEffect } from "react"
-import { Utensils, Pizza, Coffee, Files as Fries, Leaf, Soup, Cake, Egg, Fish, Flame } from "lucide-react"
+import { Sandwich, Pizza, Coffee, Popcorn, Salad, Soup, Cake, Egg, Fish, Flame } from "lucide-react"
 import "../styles/CategoryTabs.css"
 
-const categoryIcons = {
-  Burger: Utensils,
-  Pizza: Pizza,
-  Drink: Coffee,
-  "French fries": Fries,
-  Veggies: Leaf,
-  Salad: Leaf,
-  Soup: Soup,
-  Dessert: Cake,
-  Breakfast: Egg,
-  Seafood: Fish,
-  Spicy: Flame,
+const categoryIconsMap = {
+  burger: Sandwich,
+  pizza: Pizza,
+  drink: Coffee,
+  "french fries": Popcorn,
+  veggies: Salad,
+  salad: Salad,
+  soup: Soup,
+  dessert: Cake,
+  breakfast: Egg,
+  seafood: Fish,
+  spicy: Flame,
 }
 
 function CategoryTabs({ categories, selectedCategory, onSelectCategory }) {
@@ -32,7 +32,7 @@ function CategoryTabs({ categories, selectedCategory, onSelectCategory }) {
 
   const getIcon = (category) => {
     if (category === "All") return null
-    const IconComponent = categoryIcons[category]
+    const IconComponent = categoryIconsMap[category.toLowerCase()]
     return IconComponent ? <IconComponent size={20} /> : null
   }
 

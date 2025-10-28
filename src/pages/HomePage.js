@@ -6,11 +6,12 @@ import CategoryTabs from "../components/CategoryTabs"
 import MenuGrid from "../components/MenuGrid"
 import CartButton from "../components/CartButton"
 import SearchBar from "../components/SearchBar"
+import CustomerDetailsModal from "../components/CustomerDetailsModal"
 import "../styles/HomePage.css"
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || "https://restaurant-management-backend-2.onrender.com/api"
 
-function HomePage({ cart, addToCart }) {
+function HomePage({ cart, addToCart, updateQuantity, orderType, setOrderType }) {
   const navigate = useNavigate()
   const [categories, setCategories] = useState([])
   const [selectedCategory, setSelectedCategory] = useState("All")
@@ -19,6 +20,8 @@ function HomePage({ cart, addToCart }) {
   const [loading, setLoading] = useState(false)
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
+  const [showCustomerModal, setShowCustomerModal] = useState(false)
+  const [availableTables, setAvailableTables] = useState([])
   const observerTarget = useRef(null)
 
   // Fetch categories
@@ -149,6 +152,39 @@ function HomePage({ cart, addToCart }) {
   }, [page, hasMore, loading, selectedCategory, searchQuery])
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0)
+  const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+
+  const handleNextClick = () => {
+    if (cart.length === 0) {
+      alert("Your cart is empty")
+      return
+    }
+    setShowCustomerModal(true)
+  }
+
+  const fetchAvailableTables = async (capacity) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/tables/available/${capacity}`)
+      const data = await response.json()
+      setAvailableTables(data.data || [])
+    } catch (error) {
+      console.error("Error fetching tables:", error)
+      setAvailableTables([])
+    }
+  }
+
+  const handleCustomerSubmit = (customerInfo) => {
+    setShowCustomerModal(false)
+    // Navigate to checkout with customer info
+    navigate("/checkout", { state: { customerInfo } })
+  }
+
+  // Fetch tables when modal opens and dine in is selected
+  useEffect(() => {
+    if (showCustomerModal && orderType === "dineIn") {
+      fetchAvailableTables(2) // Default capacity
+    }
+  }, [showCustomerModal, orderType])
 
   return (
     <div className="home-page">
@@ -160,7 +196,7 @@ function HomePage({ cart, addToCart }) {
         <CartButton count={cartCount} onClick={() => navigate("/checkout")} />
       </header>
 
-      <SearchBar value={searchQuery} onChange={setSearchQuery} />
+      <SearchBar value={searchQuery} onChange={setSearchQuery} cartTotal={cartTotal} />
 
       <CategoryTabs
         categories={categories}
@@ -170,11 +206,28 @@ function HomePage({ cart, addToCart }) {
 
       <div className="menu-section">
         <h2 className="category-title">{selectedCategory}</h2>
-        <MenuGrid items={menuItems} onAddToCart={addToCart} />
+        <MenuGrid items={menuItems} onAddToCart={addToCart} cart={cart} onUpdateQuantity={updateQuantity} />
       </div>
 
       {hasMore && <div ref={observerTarget} className="observer-target" />}
       {loading && <div className="loading">Loading more items...</div>}
+
+      {cartCount > 0 && (
+        <button className="homepage-next-button" onClick={handleNextClick}>
+          Next
+        </button>
+      )}
+
+      {showCustomerModal && (
+        <CustomerDetailsModal
+          orderType={orderType}
+          setOrderType={setOrderType}
+          onClose={() => setShowCustomerModal(false)}
+          onSubmit={handleCustomerSubmit}
+          availableTables={availableTables}
+          initialData={null}
+        />
+      )}
     </div>
   )
 }

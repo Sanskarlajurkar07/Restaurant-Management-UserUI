@@ -62,7 +62,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage cart={cart} addToCart={addToCart} />} />
+        <Route path="/" element={<HomePage cart={cart} addToCart={addToCart} updateQuantity={updateQuantity} orderType={orderType} setOrderType={setOrderType} />} />
         <Route
           path="/checkout"
           element={
