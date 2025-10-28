@@ -1,0 +1,51 @@
+.thank-you-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.thank-you-content {
+  text-align: center;
+  color: white;
+}
+
+.thank-you-content h1 {
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.checkmark-circle {
+  width: 100px;
+  height: 100px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  animation: scaleIn 0.5s ease;
+}
+
+.checkmark-circle svg {
+  width: 60px;
+  height: 60px;
+  color: white;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.redirect-text {
+  font-size: 16px;
+  opacity: 0.9;
+}

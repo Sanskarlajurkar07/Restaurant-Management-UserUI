@@ -1,0 +1,57 @@
+.swipe-to-order {
+  position: relative;
+  width: 100%;
+  height: 56px;
+  background-color: white;
+  border-radius: 28px;
+  border: 2px solid #ddd;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  cursor: grab;
+  margin-bottom: 20px;
+}
+
+.swipe-to-order.completed {
+  background-color: #4caf50;
+  border-color: #4caf50;
+}
+
+.swipe-thumb {
+  position: absolute;
+  left: 4px;
+  width: 48px;
+  height: 48px;
+  background-color: #f0f0f0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  transition: transform 0.1s ease;
+  z-index: 10;
+}
+
+.swipe-thumb:active {
+  cursor: grabbing;
+}
+
+.swipe-thumb svg {
+  width: 24px;
+  height: 24px;
+  color: #333;
+}
+
+.swipe-text {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 16px;
+  font-weight: 600;
+  color: #999;
+  pointer-events: none;
+}
+
+.swipe-to-order.completed .swipe-text {
+  color: white;
+}

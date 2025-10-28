@@ -1,0 +1,24 @@
+"use client"
+import "../styles/MenuItem.css"
+
+function MenuItem({ item, onAddToCart }) {
+  return (
+    <div className="menu-item">
+      <div className="item-image">
+        <img src={item.image || "/placeholder.svg?height=200&width=200&query=food"} alt={item.name} />
+      </div>
+      <div className="item-info">
+        <h3>{item.name}</h3>
+        {item.description && <p className="description">{item.description}</p>}
+        <div className="item-footer">
+          <span className="price">₹{item.price}</span>
+          <button className="add-button" onClick={() => onAddToCart(item)}>
+            +
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default MenuItem

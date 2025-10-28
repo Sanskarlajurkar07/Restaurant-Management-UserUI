@@ -1,0 +1,51 @@
+.home-page {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding-bottom: 20px;
+}
+
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+.header-content h1 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.header-content p {
+  font-size: 14px;
+  color: #666;
+}
+
+.menu-section {
+  padding: 0 20px;
+}
+
+.category-title {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 20px 0;
+}
+
+.observer-target {
+  height: 20px;
+}
+
+.loading {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+.no-items {
+  text-align: center;
+  padding: 40px 20px;
+  color: #999;
+  font-size: 16px;
+}

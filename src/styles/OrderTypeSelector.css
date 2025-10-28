@@ -1,0 +1,39 @@
+.order-type-selector {
+  background-color: white;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.order-type-selector h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.type-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.type-button {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  background-color: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.type-button:hover {
+  border-color: #333;
+}
+
+.type-button.active {
+  background-color: #333;
+  color: white;
+  border-color: #333;
+}
