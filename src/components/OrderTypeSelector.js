@@ -1,4 +1,3 @@
-"use client"
 import "../styles/OrderTypeSelector.css"
 
 function OrderTypeSelector({ orderType, onSelectOrderType }) {
