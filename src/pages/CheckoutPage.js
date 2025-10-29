@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import CartSummary from "../components/CartSummary"
@@ -203,3 +201,4 @@ function CheckoutPage({
 }
 
 export default CheckoutPage
+
