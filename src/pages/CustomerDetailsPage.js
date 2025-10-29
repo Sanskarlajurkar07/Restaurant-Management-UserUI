@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import "../styles/CustomerDetailsPage.css"
@@ -140,3 +138,4 @@ function CustomerDetailsPage({ setCustomerInfo }) {
 }
 
 export default CustomerDetailsPage
+
