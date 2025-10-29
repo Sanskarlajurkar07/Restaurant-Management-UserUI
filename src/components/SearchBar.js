@@ -1,4 +1,3 @@
-"use client"
 import "../styles/SearchBar.css"
 
 function SearchBar({ value, onChange, cartTotal }) {
