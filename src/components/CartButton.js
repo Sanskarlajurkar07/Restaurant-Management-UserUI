@@ -1,4 +1,3 @@
-"use client"
 import "../styles/CartButton.css"
 
 function CartButton({ count, onClick }) {
