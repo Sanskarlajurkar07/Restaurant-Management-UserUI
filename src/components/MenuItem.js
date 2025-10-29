@@ -1,4 +1,3 @@
-"use client"
 import "../styles/MenuItem.css"
 
 function MenuItem({ item, onAddToCart, cartQuantity, onUpdateQuantity }) {
