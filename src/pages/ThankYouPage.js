@@ -1,5 +1,3 @@
-"use client"
-
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import "../styles/ThankYouPage.css"
@@ -31,3 +29,4 @@ function ThankYouPage() {
 }
 
 export default ThankYouPage
+
