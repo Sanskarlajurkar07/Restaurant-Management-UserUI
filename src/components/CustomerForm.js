@@ -1,4 +1,3 @@
-"use client"
 import "../styles/CustomerForm.css"
 
 function CustomerForm({ orderType, customerInfo, onUpdateCustomerInfo, availableTables }) {
