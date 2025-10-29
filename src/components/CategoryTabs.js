@@ -1,5 +1,3 @@
-"use client"
-
 import { useRef, useEffect } from "react"
 import { Sandwich, Pizza, Coffee, Popcorn, Salad, Soup, Cake, Egg, Fish, Flame } from "lucide-react"
 import "../styles/CategoryTabs.css"
